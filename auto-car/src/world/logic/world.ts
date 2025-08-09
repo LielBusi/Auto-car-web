@@ -4,7 +4,8 @@ import { Segment } from "./primitives/segment";
 import { Polygon } from "./primitives/polygon";
 import { Building } from "./items/building";
 import { Tree } from "./items/tree";
-import { Marking } from "./markings/marking"; // assumed imports
+import { Marking } from "./markings/marking"; 
+import { loadMarking } from "./markings/markingFactory";
 import { Light } from "./markings/light";
 import { Start } from "./markings/start";
 import { Point } from "./primitives/point";
@@ -110,7 +111,7 @@ export class World {
 
     // Filter out undefined markings here:
     world.markings = info.markings
-      .map((m) => Marking.load(m))
+      .map((m) => loadMarking(m))
       .filter((m): m is Marking => m !== undefined);
 
     world.zoom = info.zoom;
