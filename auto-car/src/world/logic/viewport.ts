@@ -70,8 +70,8 @@ export class Viewport {
   }
 
   #handleMouseDown(evt: MouseEvent): void {
-    if (evt.button === 1) {
-      // middle button
+    if (evt.button === 2 || evt.button === 1) {
+      // right click or middle button on mouse
       this.drag.start = this.getMouse(evt);
       this.drag.active = true;
     }
@@ -97,6 +97,7 @@ export class Viewport {
   }
 
   #handleMouseWheel(evt: WheelEvent): void {
+    evt.preventDefault();
     const dir = Math.sign(evt.deltaY);
     const step = 0.1;
     this.zoom += dir * step;
