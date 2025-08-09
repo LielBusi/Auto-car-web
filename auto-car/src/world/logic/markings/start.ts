@@ -1,6 +1,7 @@
 import { Marking } from "./marking";
 import { Point } from "../primitives//point";
 import { angle } from "../math/utils"; // Adjust path as needed
+import carLogo from "../../../assets/car.png";
 
 export class Start extends Marking {
   img: HTMLImageElement;
@@ -14,7 +15,7 @@ export class Start extends Marking {
     super(center, directionVector, width, height);
 
     this.img = new Image();
-    this.img.src = "car.png";
+    this.img.src = carLogo;
     this.type = "start";
   }
 
