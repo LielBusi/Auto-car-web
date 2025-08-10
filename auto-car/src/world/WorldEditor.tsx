@@ -17,6 +17,7 @@ import { YieldEditor } from "./logic/editors/yieldEditor";
 import { scale } from "./logic/math/utils";
 
 import "./styles.css";
+import LZString from "lz-string";
 
 export const WorldEditor: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,7 +44,10 @@ export const WorldEditor: React.FC = () => {
 
     const ctx = canvas.getContext("2d")!;
 
-    const worldString = localStorage.getItem("world");
+    const compressedData = localStorage.getItem("world");
+    const worldString = compressedData
+      ? LZString.decompressFromUTF16(compressedData)
+      : null;
     const worldInfo = worldString ? JSON.parse(worldString) : null;
     const world = worldInfo ? World.load(worldInfo) : new World(new Graph());
     worldRef.current = world;
@@ -136,8 +140,6 @@ export const WorldEditor: React.FC = () => {
     };
   }, []);
 
-  // פונקציות מניפולציה
-
   function enableEditor(newMode: string) {
     if (!toolsRef.current) return;
     disableEditors();
@@ -182,7 +184,7 @@ export const WorldEditor: React.FC = () => {
     element.click();
 
     URL.revokeObjectURL(url);
-    localStorage.setItem("world", dataStr);
+    localStorage.setItem("world", LZString.compressToUTF16(dataStr));
   }
 
   function load(event: React.ChangeEvent<HTMLInputElement>) {
@@ -198,7 +200,10 @@ export const WorldEditor: React.FC = () => {
       const fileContent = evt.target.result as string;
       const jsonData = JSON.parse(fileContent);
       worldRef.current = World.load(jsonData);
-      localStorage.setItem("world", JSON.stringify(worldRef.current));
+      localStorage.setItem(
+        "world",
+        LZString.compressToUTF16(JSON.stringify(worldRef.current))
+      );
       window.location.reload();
     };
   }
@@ -223,8 +228,6 @@ export const WorldEditor: React.FC = () => {
     graphRef.current.segments = res.segments;
     closeOsmPanel();
   }
-
-  // JSX: הצגת כל האלמנטים בפנים קומפוננטה אחת
 
   return (
     <div>
