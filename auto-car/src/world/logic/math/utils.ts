@@ -138,3 +138,36 @@ export function getFake3dPoint(
   const scaler = Math.atan(dist / 300) / (Math.PI / 2);
   return add(point, scale(dir, height * scaler));
 }
+
+/**
+ * Returns an RGBA string based on value polarity.
+ * Negative = blue, Positive = red, Transparency = magnitude.
+ */
+export function getRGBA(value: number): string {
+  const alpha = Math.abs(value);
+  const R = value < 0 ? 0 : 255;
+  const G = R;
+  const B = value > 0 ? 0 : 255;
+  return `rgba(${R},${G},${B},${alpha})`;
+}
+
+/**
+ * Checks if two polygons intersect by checking all edge combinations.
+ */
+export function polysIntersect(poly1: Point[], poly2: Point[]): boolean {
+  for (let i = 0; i < poly1.length; i++) {
+    const a1 = poly1[i];
+    const a2 = poly1[(i + 1) % poly1.length];
+
+    for (let j = 0; j < poly2.length; j++) {
+      const b1 = poly2[j];
+      const b2 = poly2[(j + 1) % poly2.length];
+
+      const touch = getIntersection(a1, a2, b1, b2);
+      if (touch) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
