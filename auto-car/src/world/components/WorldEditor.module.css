@@ -1,0 +1,86 @@
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue",
+    Arial;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.canvas {
+  width: 600px;
+  height: 600px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #2a5;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
+  display: block;
+}
+
+.toolbarWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: transparent;
+  padding: 8px;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.iconButton {
+  background: #f6f8fa;
+  color: #222;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.iconButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+  background: #eef2f7;
+}
+
+.active {
+  background: white;
+  border: 2px solid #6a5acd; /* purple-ish highlight */
+  box-shadow: 0 6px 18px rgba(106, 90, 205, 0.12);
+}
+
+.osmPanelWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.osmPanel {
+  max-width: 620px;
+  width: 100%;
+}
