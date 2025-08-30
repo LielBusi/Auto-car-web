@@ -234,7 +234,7 @@ export const WorldEditor: React.FC = () => {
       <h1>World Editor</h1>
       <canvas
         ref={canvasRef}
-        id="myCanvas"
+        id="carCanvas"
         width={600}
         height={600}
         style={{ border: "1px solid black", display: "block", marginBottom: 8 }}

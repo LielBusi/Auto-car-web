@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { WorldEditor } from './world/WorldEditor'
+import { WorldEditor } from "./world/components/WorldEditor";
 
 function App() {
   return (
@@ -9,4 +8,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
