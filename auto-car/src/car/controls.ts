@@ -1,4 +1,8 @@
-export type ControlType = "KEYS" | "DUMMY" | "AI";
+export enum ControlType {
+  KEYS = "KEYS",
+  DUMMY = "DUMMY",
+  AI = "AI",
+}
 
 export class Controls {
   public forward: boolean = false;
