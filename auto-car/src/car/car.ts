@@ -1,7 +1,9 @@
 import NeuralNetwork from "../geneticAlgorithm/network";
 import { Sensor } from "./sensor";
 import { Point } from "../world/logic/primitives/point";
-import { Controls, type ControlType } from "./controls";
+import { Controls, ControlType } from "./controls";
+import carImg from "../assets/car.png";
+import { polysIntersect } from "../world/logic/math/utils";
 
 interface Border extends Array<Point> {}
 interface Polygon extends Array<Point> {}
@@ -24,7 +26,7 @@ export default class Car {
   private useBrain: boolean;
 
   private sensor?: Sensor;
-  private brain?: NeuralNetwork;
+  public brain?: NeuralNetwork;
   private controls: Controls;
 
   private polygon!: Polygon;
@@ -59,7 +61,7 @@ export default class Car {
     this.controls = new Controls(controlType);
 
     this.img = new Image();
-    this.img.src = "car.png";
+    this.img.src = carImg;
 
     this.mask = document.createElement("canvas");
     this.mask.width = width;
