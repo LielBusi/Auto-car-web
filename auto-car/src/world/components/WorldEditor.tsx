@@ -130,8 +130,6 @@ export const WorldEditor: React.FC = () => {
 
   return (
     <div className={styles.editorContainer}>
-      <h1 className={styles.title}>World Editor</h1>
-
       <CanvasRenderer
         worldRef={worldRef}
         graphRef={graphRef}
