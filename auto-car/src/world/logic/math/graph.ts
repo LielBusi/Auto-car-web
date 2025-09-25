@@ -1,3 +1,4 @@
+import { PathPoint } from "../primitives/PathPoint";
 import { Point } from "../primitives/point";
 import { Segment } from "../primitives/segment";
 
@@ -91,6 +92,77 @@ export class Graph {
       }
     }
     return segs;
+  }
+
+  getSegmentsLeavingFromPoint(point: Point): Segment[] {
+    const segs: Segment[] = [];
+
+    for (const seg of this.segments as Segment[]) {
+      if (seg.oneWay) {
+        if (seg.p1.equals(point)) {
+          segs.push(seg);
+        }
+      } else {
+        if (seg.includes(point)) {
+          segs.push(seg);
+        }
+      }
+    }
+
+    return segs;
+  }
+
+  getShortestPath(start: Point, end: Point): Point[] {
+    // Create a fresh set of PathPoints
+    const pathPoints: PathPoint[] = this.points.map(
+      (p) => new PathPoint(p.x, p.y, Number.MAX_SAFE_INTEGER, false, null)
+    );
+
+    // Find corresponding PathPoint instances for start and end
+    let currentPoint: PathPoint = pathPoints.find((pp) => pp.equals(start))!;
+    const endPoint: PathPoint = pathPoints.find((pp) => pp.equals(end))!;
+
+    currentPoint.dist = 0;
+
+    while (!endPoint.visited) {
+      const segs: Segment[] = this.getSegmentsLeavingFromPoint(currentPoint);
+
+      for (const seg of segs) {
+        // ✅ pick the other endpoint of the segment
+        const neighbor = seg.p1.equals(currentPoint) ? seg.p2 : seg.p1;
+
+        // ✅ find the corresponding PathPoint for that neighbor
+        const otherPoint: PathPoint | undefined = pathPoints.find((pp) =>
+          pp.equals(neighbor)
+        );
+        if (!otherPoint) continue;
+
+        const newDist = currentPoint.dist + seg.length();
+        if (newDist < otherPoint.dist) {
+          otherPoint.dist = newDist;
+          otherPoint.prev = currentPoint;
+        }
+      }
+
+      currentPoint.visited = true;
+
+      const unvisited: PathPoint[] = pathPoints.filter((p) => !p.visited);
+      if (unvisited.length === 0) break; // ✅ avoid infinite loop if disconnected graph
+
+      const minDist = Math.min(...unvisited.map((p) => p.dist));
+      currentPoint = unvisited.find((p) => p.dist === minDist)!;
+    }
+
+    // Reconstruct path
+    const path: Point[] = [];
+    let backtrack: PathPoint | null = endPoint;
+
+    while (backtrack) {
+      path.unshift(new Point(backtrack.x, backtrack.y));
+      backtrack = backtrack.prev;
+    }
+
+    return path;
   }
 
   dispose(): void {

@@ -9,8 +9,10 @@ import { Start } from "../world/logic/markings/start";
 import { Point } from "../world/logic/primitives/point";
 import { angle, scale } from "../world/logic/math/utils";
 import { FaSave, FaTrash } from "react-icons/fa";
+import styles from "../world/components/WorldEditor.module.css";
 
 import LZString from "lz-string";
+import { Target } from "../world/logic/markings/target";
 
 const N_CARS = 250;
 
@@ -31,14 +33,14 @@ const GeneticLearning: React.FC = () => {
     const miniMapCanvas = miniMapCanvasRef.current;
     if (!carCanvas || !networkCanvas || !miniMapCanvas) return;
 
-    carCanvas.width = window.innerWidth - 330;
-    carCanvas.height = window.innerHeight;
+    carCanvas.width = 600;
+    carCanvas.height = 600;
 
-    networkCanvas.width = 300;
-    networkCanvas.height = window.innerHeight - 300;
+    networkCanvas.width = 330;
+    networkCanvas.height = 600;
 
-    miniMapCanvas.width = 300;
-    miniMapCanvas.height = 300;
+    // miniMapCanvas.width = 300;
+    // miniMapCanvas.height = 300;
 
     const carCtx = carCanvas.getContext("2d")!;
     const networkCtx = networkCanvas.getContext("2d")!;
@@ -66,10 +68,20 @@ const GeneticLearning: React.FC = () => {
       }
     }
 
+    const target = world.markings.find((m) => m instanceof Target);
+    let roadBorders: Point[][] | null = null;
+
+    if (target) {
+      world.generateCorridor(new Point(bestCar.x, bestCar.y), target.center);
+      roadBorders = world.corridor.map((s) => [s.p1, s.p2]);
+    }
+
     const traffic: Car[] = [];
     trafficRef.current = traffic;
 
-    const roadBorders = world.roadBorders.map((s) => [s.p1, s.p2]);
+    if (roadBorders == null) {
+      roadBorders = world.roadBorders.map((s) => [s.p1, s.p2]);
+    }
 
     function animate(time: number) {
       for (const t of traffic) t.update(roadBorders, []);
@@ -135,7 +147,7 @@ const GeneticLearning: React.FC = () => {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <div style={{ position: "relative", flex: 1 }}>
-        <canvas ref={carCanvasRef} id="carCanvas" style={{ zIndex: 1 }} />
+        <canvas ref={carCanvasRef} id="carCanvas" className={styles.canvas} />
         <canvas
           ref={miniMapCanvasRef}
           id="miniMapCanvas"
@@ -168,7 +180,11 @@ const GeneticLearning: React.FC = () => {
           </button>
         </div>
       </div>
-      <canvas ref={networkCanvasRef} id="networkCanvas" />
+      <canvas
+        ref={networkCanvasRef}
+        id="networkCanvas"
+        className={styles.networkCanvas}
+      />
     </div>
   );
 };
