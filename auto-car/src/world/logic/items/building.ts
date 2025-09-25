@@ -3,7 +3,7 @@ import { Point } from "../primitives/point";
 import { average, getFake3dPoint } from "../math/utils";
 
 export class Building {
-  base: Polygon;
+  private base: Polygon;
   height: number;
 
   constructor(poly: Polygon, height = 200) {

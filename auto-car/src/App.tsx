@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-import { WorldEditor } from "./world/WorldEditor";
+import { WorldEditor } from "./world/components/WorldEditor";
 import GeneticLearning from "./geneticAlgorithm/geneticLearning";
 
 const App: React.FC = () => {

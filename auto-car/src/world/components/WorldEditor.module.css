@@ -21,11 +21,18 @@ body {
 }
 
 .canvas {
-  width: 600px;
-  height: 600px;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   background: #2a5;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
+  display: block;
+}
+
+.networkCanvas {
+  height: 600px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: rgb(56, 63, 59);
   box-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
   display: block;
 }

@@ -2,11 +2,12 @@ import { Point } from "./point";
 import { Segment } from "./segment";
 import { getIntersection, average, getRandomColor } from "../math/utils";
 
+// Polygon: Closed area
 export class Polygon {
-  points: Point[];
-  segments: Segment[];
+  public points: Point[];
+  public segments: Segment[];
 
-  constructor(points: Point[]) {
+  public constructor(points: Point[]) {
     this.points = points;
     this.segments = [];
     for (let i = 1; i <= points.length; i++) {
@@ -14,11 +15,12 @@ export class Polygon {
     }
   }
 
-  static load(info: { points: { x: number; y: number }[] }): Polygon {
+  public static load(info: { points: { x: number; y: number }[] }): Polygon {
     return new Polygon(info.points.map((i) => new Point(i.x, i.y)));
   }
 
-  static union(polys: Polygon[]): Segment[] {
+  // Unite several polygons into one polygon
+  public static union(polys: Polygon[]): Segment[] {
     Polygon.multiBreak(polys);
     const keptSegments: Segment[] = [];
     for (let i = 0; i < polys.length; i++) {
@@ -40,7 +42,7 @@ export class Polygon {
     return keptSegments;
   }
 
-  static multiBreak(polys: Polygon[]): void {
+  public static multiBreak(polys: Polygon[]): void {
     for (let i = 0; i < polys.length - 1; i++) {
       for (let j = i + 1; j < polys.length; j++) {
         Polygon.break(polys[i], polys[j]);
@@ -48,7 +50,7 @@ export class Polygon {
     }
   }
 
-  static break(poly1: Polygon, poly2: Polygon): void {
+  public static break(poly1: Polygon, poly2: Polygon): void {
     const segs1 = poly1.segments;
     const segs2 = poly2.segments;
     for (let i = 0; i < segs1.length; i++) {

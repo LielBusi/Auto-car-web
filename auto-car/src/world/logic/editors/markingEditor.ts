@@ -6,8 +6,8 @@ import { Marking } from "../markings/marking";
 import { getNearestSegment } from "../math/utils";
 
 export class MarkingEditor {
-  viewport: Viewport;
-  world: World;
+  private viewport: Viewport;
+  private world: World;
 
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;

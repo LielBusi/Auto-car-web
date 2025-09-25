@@ -71,6 +71,8 @@ export class Viewport {
 
   #handleMouseDown(evt: MouseEvent): void {
     if (evt.button === 2 || evt.button === 1) {
+      evt.preventDefault();
+
       // right click or middle button on mouse
       this.drag.start = this.getMouse(evt);
       this.drag.active = true;
@@ -78,6 +80,8 @@ export class Viewport {
   }
 
   #handleMouseMove(evt: MouseEvent): void {
+    evt.preventDefault();
+
     if (this.drag.active) {
       this.drag.end = this.getMouse(evt);
       this.drag.offset = subtract(this.drag.end, this.drag.start);
@@ -86,6 +90,7 @@ export class Viewport {
 
   #handleMouseUp(evt: MouseEvent): void {
     if (this.drag.active) {
+      evt.preventDefault();
       this.offset = add(this.offset, this.drag.offset);
       this.drag = {
         start: new Point(0, 0),

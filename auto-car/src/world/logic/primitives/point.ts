@@ -1,17 +1,17 @@
 export class Point {
-  x: number;
-  y: number;
+  public x: number;
+  public y: number;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 
-  equals(point: Point): boolean {
+  public equals(point: Point): boolean {
     return this.x === point.x && this.y === point.y;
   }
 
-  draw(
+  public draw(
     ctx: CanvasRenderingContext2D,
     options: {
       size?: number;
