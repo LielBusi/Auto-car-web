@@ -1,5 +1,6 @@
 import { lerp, getIntersection } from "../world/logic/math/utils";
 import { Point } from "../world/logic/primitives/point";
+import type { Polygon } from "../world/logic/primitives/polygon";
 import Car from "./car";
 
 export type Intersection = {
@@ -7,10 +8,6 @@ export type Intersection = {
   y: number;
   offset: number;
 };
-
-export interface TrafficCar {
-  polygon: Point[];
-}
 
 export class Sensor {
   private car: Car;
@@ -25,7 +22,7 @@ export class Sensor {
     this.car = car;
   }
 
-  public update(roadBorders: [Point, Point][], traffic: TrafficCar[]): void {
+  public update(roadBorders: [Point, Point][], traffic: Polygon[]): void {
     this.castRays();
     this.readings = this.rays.map((ray) =>
       this.getReading(ray, roadBorders, traffic)
@@ -35,7 +32,7 @@ export class Sensor {
   private getReading(
     ray: [Point, Point],
     roadBorders: [Point, Point][],
-    traffic: TrafficCar[]
+    traffic: Polygon[]
   ): Intersection | null {
     const touches: Intersection[] = [];
 
@@ -45,7 +42,7 @@ export class Sensor {
     }
 
     for (const car of traffic) {
-      const poly = car.polygon;
+      const poly = car.points;
       for (let i = 0; i < poly.length; i++) {
         const nextIndex = (i + 1) % poly.length;
         const touch = getIntersection(ray[0], ray[1], poly[i], poly[nextIndex]);

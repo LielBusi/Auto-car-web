@@ -2,25 +2,21 @@ import { Point } from "./primitives/point";
 import { add, subtract, scale } from "./math/utils";
 
 export class Viewport {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
+  public canvas: HTMLCanvasElement;
+  public ctx: CanvasRenderingContext2D;
 
-  zoom: number;
-  center: Point;
-  offset: Point;
+  public zoom: number;
+  public center: Point;
+  public offset: Point;
 
-  drag: {
+  public drag: {
     start: Point;
     end: Point;
     offset: Point;
     active: boolean;
   };
 
-  constructor(
-    canvas: HTMLCanvasElement,
-    zoom = 1,
-    offset: Point | null = null
-  ) {
+  public constructor(canvas: HTMLCanvasElement, zoom: number = 1, offset: Point | null = null) {
     this.canvas = canvas;
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Failed to get 2D context");

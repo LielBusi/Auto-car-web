@@ -3,22 +3,21 @@ import { Point } from "../primitives/point";
 import { average, getFake3dPoint } from "../math/utils";
 
 export class Building {
-  private base: Polygon;
-  height: number;
+  public base: Polygon;
+  public height: number;
 
-  constructor(poly: Polygon, height = 200) {
+  public constructor(poly: Polygon, height = 200) {
     this.base = poly;
     this.height = height;
   }
 
-  static load(info: { base: any; height: number }): Building {
+  public static load(info: { base: any; height: number }): Building {
     return new Building(Polygon.load(info.base), info.height);
   }
 
-  draw(ctx: CanvasRenderingContext2D, viewPoint: Point): void {
-    const topPoints = this.base.points.map((p) =>
-      getFake3dPoint(p, viewPoint, this.height * 0.6)
-    );
+  public draw(ctx: CanvasRenderingContext2D, viewPoint: Point): void {
+    const topPoints = this.base.points.map((p) => getFake3dPoint(p, viewPoint, this.height * 0.6));
+
     const ceiling = new Polygon(topPoints);
 
     const sides: Polygon[] = [];

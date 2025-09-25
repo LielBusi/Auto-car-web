@@ -5,18 +5,18 @@ export enum ControlType {
 }
 
 export class Controls {
-  public forward: boolean = false;
-  public left: boolean = false;
-  public right: boolean = false;
-  public reverse: boolean = false;
+  public forward: number;
+  public left: number;
+  public right: number;
+  public reverse: number;
 
-  constructor(type: ControlType) {
+  public constructor(type: ControlType) {
     switch (type) {
       case "KEYS":
-        this.#addKeyboardListeners();
+        this.addKeyboardListeners();
         break;
       case "DUMMY":
-        this.forward = true;
+        this.forward = 10;
         break;
       // AI is default case
       default:
@@ -25,25 +25,25 @@ export class Controls {
   }
 
   // Private method to listen to keyboard input
-  #addKeyboardListeners(): void {
-    document.addEventListener("keydown", this.#onKeyDown);
+  private addKeyboardListeners(): void {
+    document.addEventListener("keydown", this.onKeyDown);
     document.addEventListener("keyup", this.#onKeyUp);
   }
 
   // Arrow function ensures `this` binding
-  #onKeyDown = (event: KeyboardEvent): void => {
+  private onKeyDown = (event: KeyboardEvent): void => {
     switch (event.key) {
       case "ArrowLeft":
-        this.left = true;
+        this.left = 10;
         break;
       case "ArrowRight":
-        this.right = true;
+        this.right = 10;
         break;
       case "ArrowUp":
-        this.forward = true;
+        this.forward = 10;
         break;
       case "ArrowDown":
-        this.reverse = true;
+        this.reverse = 10;
         break;
     }
   };

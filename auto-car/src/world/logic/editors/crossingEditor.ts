@@ -2,10 +2,11 @@ import { MarkingEditor } from './markingEditor';
 import { Crossing } from '../markings/crossing';
 import { World } from '../world';
 import { Point } from '../primitives/point';
+import type { Viewport } from '../viewport';
 
 export class CrossingEditor extends MarkingEditor {
   constructor(
-    viewport: any, // replace with actual type
+    viewport: Viewport,
     world: World
   ) {
     super(viewport, world, world.graph.segments);

@@ -12,7 +12,6 @@ import { Point } from "./primitives/point";
 import {
   lerp,
   add,
-  subtract,
   scale,
   distance,
   getNearestPoint,
