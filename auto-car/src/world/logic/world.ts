@@ -4,7 +4,7 @@ import { Segment } from "./primitives/segment";
 import { Polygon } from "./primitives/polygon";
 import { Building } from "./items/building";
 import { Tree } from "./items/tree";
-import { Marking } from "./markings/marking"; 
+import { Marking } from "./markings/marking";
 import { loadMarking } from "./markings/markingFactory";
 import { Light } from "./markings/light";
 import { Start } from "./markings/start";
@@ -16,6 +16,7 @@ import {
   scale,
   distance,
   getNearestPoint,
+  getNearestSegment,
 } from "./math/utils";
 
 type WorldInfo = {
@@ -44,6 +45,7 @@ export class World {
   buildingMinLength: number;
   spacing: number;
   treeSize: number;
+  corridor: Segment[];
 
   envelopes: Envelope[];
   roadBorders: Segment[];
@@ -88,6 +90,7 @@ export class World {
 
     this.cars = [];
     this.bestCar = null;
+    this.corridor = [];
 
     this.frameCount = 0;
 
@@ -144,6 +147,48 @@ export class World {
     }
     const segments = Polygon.union(tmpEnvelopes.map((e) => e.poly));
     return segments;
+  }
+
+  generateCorridor(start: Point, end: Point): void {
+    const startSeg: Segment = getNearestSegment(start, this.graph.segments)!;
+    const endSeg: Segment = getNearestSegment(end, this.graph.segments)!;
+
+    const { point: projStart }: { point: Point } = startSeg.projectPoint(start);
+    const { point: projEnd }: { point: Point } = endSeg.projectPoint(end);
+
+    this.graph.points.push(projStart);
+    this.graph.points.push(projEnd);
+
+    const tmpSegs: Segment[] = [
+      new Segment(startSeg.p1, projStart),
+      new Segment(projStart, startSeg.p2),
+      new Segment(endSeg.p1, projEnd),
+      new Segment(projEnd, endSeg.p2),
+    ];
+
+    if (startSeg.equals(endSeg)) {
+      tmpSegs.push(new Segment(projStart, projEnd));
+    }
+
+    this.graph.segments = this.graph.segments.concat(tmpSegs);
+
+    const path: Point[] = this.graph.getShortestPath(projStart, projEnd);
+
+    this.graph.removePoint(projStart);
+    this.graph.removePoint(projEnd);
+
+    const segs: Segment[] = [];
+    for (let i = 1; i < path.length; i++) {
+      segs.push(new Segment(path[i - 1], path[i]));
+    }
+
+    const tmpEnvelopes: Envelope[] = segs.map(
+      (s) => new Envelope(s, this.roadWidth, this.roadRoundness)
+    );
+
+    const segments: Segment[] = Polygon.union(tmpEnvelopes.map((e) => e.poly));
+
+    this.corridor = segments;
   }
 
   #generateTrees(): Tree[] {
@@ -365,6 +410,12 @@ export class World {
     }
     for (const seg of this.roadBorders) {
       seg.draw(ctx, { color: "white", width: 4 });
+    }
+
+    if (this.corridor) {
+      for (const seg of this.corridor) {
+        seg.draw(ctx, { color: "gray", width: 4 });
+      }
     }
 
     ctx.globalAlpha = 0.2;
