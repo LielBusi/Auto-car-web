@@ -2,7 +2,7 @@ export class Point {
   public x: number;
   public y: number;
 
-  constructor(x: number, y: number) {
+  public constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
@@ -11,8 +11,7 @@ export class Point {
     return this.x === point.x && this.y === point.y;
   }
 
-  public draw(
-    ctx: CanvasRenderingContext2D,
+  public draw(ctx: CanvasRenderingContext2D,
     options: {
       size?: number;
       color?: string;

@@ -1,9 +1,11 @@
 import { Point } from "../primitives/point.ts";
 import { Segment } from "../primitives/segment.ts";
 
+// Return nearest point from loc in points array, within an optional threshold distance.
 export function getNearestPoint(
   loc: Point,
   points: Point[],
+  // Threshold means the point must be within this distance to be considered.
   threshold: number = Number.MAX_SAFE_INTEGER
 ): Point | null {
   let minDist = Number.MAX_SAFE_INTEGER;
@@ -18,6 +20,7 @@ export function getNearestPoint(
   return nearest;
 }
 
+// Return nearest segment from loc in segments array, within an optional threshold distance.
 export function getNearestSegment(
   loc: Point,
   segments: Segment[],
@@ -59,10 +62,12 @@ export function scale(p: Point, scaler: number): Point {
   return new Point(p.x * scaler, p.y * scaler);
 }
 
+// Normalize a point treated as a vector from origin to length 1.
 export function normalize(p: Point): Point {
   return scale(p, 1 / magnitude(p));
 }
 
+// Magnitude (length) of a point treated as a vector from origin.
 export function magnitude(p: Point): number {
   return Math.hypot(p.x, p.y);
 }
@@ -71,6 +76,7 @@ export function perpendicular(p: Point): Point {
   return new Point(-p.y, p.x);
 }
 
+// Translate a point by angle (radians) and offset, returning a new point with offset distance from loc at the given angle.
 export function translate(loc: Point, angle: number, offset: number): Point {
   return new Point(
     loc.x + Math.cos(angle) * offset,
@@ -82,6 +88,7 @@ export function angle(p: Point): number {
   return Math.atan2(p.y, p.x);
 }
 
+// Get intersection point of two line segments AB and CD, or null if none.
 export function getIntersection(
   A: Point,
   B: Point,
