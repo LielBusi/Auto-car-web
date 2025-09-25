@@ -53,7 +53,7 @@ export const Osm = {
       const y = invLerp(maxLat, minLat, node.lat) * height;
       const x = invLerp(minLon, maxLon, node.lon) * width;
       const point = new Point(x, y);
-      (point as any).id = node.id; // Add id dynamically, adjust if Point supports id
+      point.id = node.id; // Add id dynamically, adjust if Point supports id
       points.push(point);
     }
 
